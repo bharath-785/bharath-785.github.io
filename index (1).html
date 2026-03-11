@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bharathkumar Reddy Bandari — Cybersecurity</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:     #0a0c0f;
+  --bg2:    #0d1117;
+  --bg3:    #111620;
+  --panel:  #131820;
+  --border: rgba(200,130,10,0.12);
+  --amber:  #c8820a;
+  --amber2: #e8970c;
+  --amber3: rgba(200,130,10,0.08);
+  --text:   #c4c9d4;
+  --muted:  #5a6070;
+  --white:  #e8ecf0;
+  --red:    #e05252;
+  --green:  #52e08a;
+  --blue:   #5294e0;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--bg);
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* subtle noise */
+body::before {
+  content:''; position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:0.025; pointer-events:none; z-index:0;
+}
+
+/* ═══════════════ NAV ═══════════════ */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:500;
+  height:56px; display:flex; align-items:center; justify-content:space-between;
+  padding:0 48px;
+  background:rgba(10,12,15,0.9); backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand { font-family:'Playfair Display',serif; font-size:1.05rem; font-weight:700; color:var(--white); text-decoration:none; }
+.nav-brand span { color:var(--amber); font-style:italic; }
+.nav-links { display:flex; gap:32px; list-style:none; }
+.nav-links a { font-size:0.75rem; font-weight:500; letter-spacing:0.08em; color:var(--muted); text-decoration:none; text-transform:uppercase; transition:color 0.2s; }
+.nav-links a:hover { color:var(--amber); }
+.nav-cta { font-size:0.72rem; font-weight:500; letter-spacing:0.08em; padding:8px 20px; border:1px solid var(--amber); color:var(--amber); text-decoration:none; text-transform:uppercase; transition:all 0.25s; }
+.nav-cta:hover { background:var(--amber); color:var(--bg); }
+.hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; }
+.hamburger span { display:block; width:22px; height:1.5px; background:var(--white); transition:all 0.3s; }
+
+/* ═══════════════ HERO ═══════════════ */
+#hero {
+  min-height:100vh; display:grid; grid-template-columns:1fr 1fr;
+  position:relative; z-index:1; padding-top:56px;
+}
+.hero-left {
+  padding:80px 48px; display:flex; flex-direction:column; justify-content:center;
+  border-right:1px solid var(--border);
+}
+.hero-eyebrow { font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--amber); margin-bottom:20px; display:flex; align-items:center; gap:10px; }
+.hero-eyebrow::before { content:''; display:block; width:32px; height:1px; background:var(--amber); }
+.hero-name { font-family:'Playfair Display',serif; font-size:clamp(2.8rem,5.5vw,5rem); font-weight:900; line-height:0.95; color:var(--white); margin-bottom:28px; letter-spacing:-0.02em; }
+.hero-name em { color:var(--amber); font-style:italic; display:block; }
+.hero-desc { font-size:1.05rem; line-height:1.8; font-weight:300; color:var(--text); max-width:460px; margin-bottom:40px; }
+.hero-desc strong { color:var(--white); font-weight:500; }
+.hero-actions { display:flex; gap:14px; flex-wrap:wrap; }
+.btn-amber { font-size:0.75rem; font-weight:500; letter-spacing:0.1em; padding:13px 28px; text-transform:uppercase; background:var(--amber); color:var(--bg); text-decoration:none; transition:all 0.25s; }
+.btn-amber:hover { background:var(--amber2); }
+.btn-outline { font-size:0.75rem; font-weight:500; letter-spacing:0.1em; padding:13px 28px; text-transform:uppercase; border:1px solid rgba(200,130,10,0.3); color:var(--muted); text-decoration:none; transition:all 0.25s; }
+.btn-outline:hover { border-color:var(--amber); color:var(--amber); }
+
+.hero-right { background:var(--bg2); display:flex; flex-direction:column; justify-content:flex-end; padding:48px; position:relative; overflow:hidden; }
+.hero-bg-text { position:absolute; top:-20px; right:-20px; font-family:'Playfair Display',serif; font-size:22rem; font-weight:900; line-height:1; color:rgba(200,130,10,0.04); pointer-events:none; user-select:none; letter-spacing:-0.05em; }
+.hero-stats { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(200,130,10,0.06); margin-bottom:32px; }
+.hero-stat { background:var(--bg2); padding:24px 20px; border-bottom:2px solid transparent; transition:border-color 0.3s; }
+.hero-stat:hover { border-color:var(--amber); }
+.hero-stat-n { font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:900; color:var(--amber); line-height:1; margin-bottom:6px; }
+.hero-stat-l { font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); font-weight:400; }
+.hero-tags { display:flex; flex-wrap:wrap; gap:8px; }
+.hero-tag { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.1em; padding:5px 12px; border:1px solid rgba(200,130,10,0.15); color:var(--muted); transition:all 0.2s; }
+.hero-tag:hover { border-color:var(--amber); color:var(--amber); }
+
+/* ═══════════════ SECTION BASE ═══════════════ */
+section { position:relative; z-index:1; }
+.sec-inner { max-width:1100px; margin:0 auto; }
+.sec-label { font-family:'DM Mono',monospace; font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--amber); margin-bottom:10px; display:flex; align-items:center; gap:10px; }
+.sec-label::after { content:''; flex:0 0 40px; height:1px; background:var(--amber); }
+.sec-title { font-family:'Playfair Display',serif; font-size:clamp(2rem,4vw,3rem); font-weight:900; color:var(--white); line-height:1.05; letter-spacing:-0.02em; }
+.sec-title em { color:var(--amber); font-style:italic; }
+
+/* ═══════════════ ABOUT — ANIMATED ═══════════════ */
+#about { padding:100px 48px; background:var(--bg2); }
+.about-layout { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; }
+
+/* — Left: Identity card — */
+.about-card {
+  background:var(--panel); border:1px solid var(--border);
+  padding:32px; position:relative; overflow:hidden;
+}
+.about-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--amber),transparent); animation:scanbar 3s ease-in-out infinite; }
+@keyframes scanbar { 0%,100%{opacity:0.3}50%{opacity:1} }
+
+.about-avatar {
+  width:80px; height:80px; border-radius:50%;
+  background:var(--bg3); border:2px solid rgba(200,130,10,0.3);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:900; color:var(--amber);
+  margin-bottom:20px; position:relative;
+}
+.about-avatar::after { content:''; position:absolute; inset:-6px; border-radius:50%; border:1px dashed rgba(200,130,10,0.2); animation:spin-slow 12s linear infinite; }
+@keyframes spin-slow { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+.online-ring { position:absolute; bottom:4px; right:4px; width:14px; height:14px; background:var(--green); border-radius:50%; border:2px solid var(--panel); animation:pulse-dot 2s ease-in-out infinite; }
+@keyframes pulse-dot { 0%,100%{box-shadow:0 0 0 0 rgba(82,224,138,0.4)}50%{box-shadow:0 0 0 6px rgba(82,224,138,0)} }
+
+.about-name { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:900; color:var(--white); margin-bottom:4px; }
+.about-title { font-size:0.75rem; color:var(--amber); letter-spacing:0.08em; margin-bottom:20px; }
+.about-facts { list-style:none; margin-bottom:20px; }
+.about-facts li { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(200,130,10,0.07); font-size:0.78rem; }
+.about-facts li span:first-child { color:var(--muted); font-size:0.65rem; text-transform:uppercase; letter-spacing:0.08em; }
+.about-facts li span:last-child { color:var(--white); font-weight:500; }
+
+/* — Right: Animation panels — */
+.about-animations { display:flex; flex-direction:column; gap:20px; }
+
+/* Animated counter strip */
+.anim-counters { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.anim-counter {
+  background:var(--panel); border:1px solid var(--border);
+  padding:20px 16px; text-align:center; position:relative; overflow:hidden;
+}
+.anim-counter::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--amber); transform:scaleX(0); transform-origin:left; animation:fill-bar 2s ease forwards; animation-delay:var(--d,0s); }
+@keyframes fill-bar { to{transform:scaleX(1)} }
+.counter-num { font-family:'Playfair Display',serif; font-size:2rem; font-weight:900; color:var(--amber); line-height:1; }
+.counter-label { font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.14em; color:var(--muted); margin-top:6px; text-transform:uppercase; }
+
+/* Threat map */
+.anim-map {
+  background:var(--panel); border:1px solid var(--border);
+  padding:20px; position:relative; overflow:hidden;
+}
+.anim-map-title { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--amber); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.live-dot { width:6px; height:6px; background:var(--red); border-radius:50%; animation:pulse-dot2 1.2s ease-in-out infinite; }
+@keyframes pulse-dot2 { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(1.5)} }
+#threatCanvas { width:100%; height:160px; display:block; }
+
+/* Radar */
+.anim-radar {
+  background:var(--panel); border:1px solid var(--border);
+  padding:20px; display:flex; gap:24px; align-items:center;
+}
+.radar-wrap { position:relative; flex-shrink:0; }
+#radarCanvas { display:block; }
+.radar-info { flex:1; }
+.radar-info-title { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--amber); margin-bottom:14px; }
+.radar-events { list-style:none; }
+.radar-events li { font-size:0.72rem; padding:6px 0; border-bottom:1px solid rgba(200,130,10,0.06); display:flex; align-items:center; gap:10px; color:var(--text); }
+.radar-events li:last-child { border-bottom:none; }
+.rev-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.rev-dot.r { background:var(--red); box-shadow:0 0 6px var(--red); }
+.rev-dot.y { background:var(--amber); box-shadow:0 0 6px var(--amber); }
+.rev-dot.g { background:var(--green); box-shadow:0 0 6px var(--green); }
+
+/* Skill rings */
+.anim-skills { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.skill-ring-wrap { text-align:center; }
+.skill-ring-svg { display:block; margin:0 auto 8px; }
+.skill-ring-label { font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.1em; color:var(--muted); text-transform:uppercase; }
+
+/* ═══════════════ EXPERIENCE ═══════════════ */
+#experience { padding:100px 48px; background:var(--bg); }
+.exp-layout { display:grid; grid-template-columns:1fr 2fr; gap:80px; }
+.exp-sidebar { position:sticky; top:80px; }
+.exp-nav { list-style:none; margin-top:32px; }
+.exp-nav li { padding:14px 0; border-bottom:1px solid rgba(200,130,10,0.08); cursor:pointer; transition:all 0.2s; }
+.exp-nav li:first-child { border-top:1px solid rgba(200,130,10,0.08); }
+.exp-nav-company { font-weight:500; font-size:0.9rem; color:var(--muted); transition:color 0.2s; }
+.exp-nav li:hover .exp-nav-company, .exp-nav li.active .exp-nav-company { color:var(--amber); }
+.exp-nav-period { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--muted); letter-spacing:0.1em; margin-top:3px; opacity:0.6; }
+.exp-nav li.active { padding-left:12px; border-left:2px solid var(--amber); }
+.exp-panels {}
+.exp-panel { display:none; }
+.exp-panel.active { display:block; animation:fadeSlide 0.35s ease; }
+@keyframes fadeSlide { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+.exp-header { margin-bottom:32px; padding-bottom:24px; border-bottom:1px solid rgba(200,130,10,0.1); }
+.exp-role { font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:900; color:var(--white); line-height:1.1; margin-bottom:8px; }
+.exp-meta-row { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+.exp-company-name { font-size:0.9rem; font-weight:500; color:var(--amber); }
+.exp-dot { width:4px; height:4px; background:var(--muted); border-radius:50%; }
+.exp-location { font-size:0.8rem; color:var(--muted); }
+.exp-period { font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--muted); letter-spacing:0.1em; margin-left:auto; }
+.exp-badge { display:inline-block; font-size:0.6rem; letter-spacing:0.12em; padding:3px 10px; text-transform:uppercase; background:rgba(200,130,10,0.08); color:var(--amber); border:1px solid rgba(200,130,10,0.2); margin-top:10px; }
+.exp-story { font-size:0.95rem; line-height:1.85; color:var(--text); }
+.exp-story p { margin-bottom:16px; }
+.exp-story strong { color:var(--white); font-weight:500; }
+.exp-story .pull-quote { font-family:'Playfair Display',serif; font-size:1.15rem; font-style:italic; font-weight:700; color:var(--white); padding:20px 24px; border-left:3px solid var(--amber); background:rgba(200,130,10,0.04); margin:24px 0; line-height:1.5; }
+.exp-tags { display:flex; flex-wrap:wrap; gap:7px; margin-top:24px; }
+.exp-tag { font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.1em; padding:4px 10px; background:rgba(200,130,10,0.06); color:var(--muted); border:1px solid rgba(200,130,10,0.1); transition:all 0.2s; }
+.exp-tag:hover { color:var(--amber); border-color:rgba(200,130,10,0.3); }
+
+/* ═══════════════ SKILLS ═══════════════ */
+#skills { padding:100px 48px; background:var(--bg3); }
+.skills-layout { display:grid; grid-template-columns:1fr 1fr; gap:60px; margin-top:60px; }
+.skill-col-title { font-family:'Playfair Display',serif; font-size:1.1rem; font-style:italic; color:var(--muted); margin-bottom:28px; padding-bottom:12px; border-bottom:1px solid rgba(200,130,10,0.08); }
+.sbar { margin-bottom:18px; }
+.sbar-top { display:flex; justify-content:space-between; margin-bottom:6px; }
+.sbar-name { font-size:0.8rem; color:var(--text); font-weight:400; }
+.sbar-pct { font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--amber); }
+.sbar-track { height:2px; background:rgba(200,130,10,0.1); }
+.sbar-fill { height:100%; background:linear-gradient(90deg,var(--amber),var(--amber2)); width:0; transition:width 1.6s cubic-bezier(0.4,0,0.2,1); }
+.tag-section { margin-top:10px; }
+.tag-section-title { font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; opacity:0.5; }
+.tag-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+.skil-tag { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.08em; padding:5px 12px; border:1px solid rgba(200,130,10,0.12); color:var(--muted); transition:all 0.2s; background:rgba(200,130,10,0.03); }
+.skil-tag:hover { border-color:var(--amber); color:var(--amber); }
+.skil-tag.amber { border-color:rgba(200,130,10,0.25); color:rgba(200,130,10,0.7); }
+.skil-tag.cyan { border-color:rgba(82,148,224,0.2); color:rgba(82,148,224,0.7); }
+
+/* ═══════════════ CERTS ═══════════════ */
+#certifications { padding:100px 48px; background:var(--bg2); }
+.cert-layout { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; margin-top:48px; }
+.cert-card { padding:32px 28px; border:1px solid var(--border); background:var(--panel); transition:all 0.3s; position:relative; overflow:hidden; }
+.cert-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--amber); transform:scaleX(0); transform-origin:left; transition:transform 0.3s; }
+.cert-card:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(200,130,10,0.08); }
+.cert-card:hover::before { transform:scaleX(1); }
+.cert-icon { font-size:2rem; margin-bottom:16px; display:block; }
+.cert-name { font-family:'Playfair Display',serif; font-size:1.15rem; font-weight:700; color:var(--white); margin-bottom:6px; }
+.cert-issuer { font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); }
+.cert-date { font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--amber); margin-top:14px; display:block; }
+.cert-coming { opacity:0.4; }
+
+/* ═══════════════ EDUCATION ═══════════════ */
+#education { padding:80px 48px; background:var(--bg); }
+.edu-card { display:flex; gap:32px; align-items:center; padding:40px; background:var(--panel); border:1px solid var(--border); max-width:700px; }
+.edu-num { font-family:'Playfair Display',serif; font-size:5rem; font-weight:900; color:rgba(200,130,10,0.1); line-height:1; flex-shrink:0; letter-spacing:-0.04em; }
+.edu-degree { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; color:var(--white); margin-bottom:6px; line-height:1.3; }
+.edu-school { font-size:0.9rem; color:var(--text); margin-bottom:6px; }
+.edu-detail { font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--amber); letter-spacing:0.1em; }
+
+/* ═══════════════ CONTACT ═══════════════ */
+#contact { padding:100px 48px; background:var(--bg2); }
+.contact-layout { display:grid; grid-template-columns:1fr 1fr; gap:80px; margin-top:60px; align-items:start; }
+.contact-text { font-family:'Playfair Display',serif; font-size:1.3rem; font-style:italic; font-weight:700; color:var(--muted); line-height:1.6; margin-bottom:28px; }
+.contact-email { font-size:1rem; color:var(--amber); text-decoration:none; border-bottom:1px solid rgba(200,130,10,0.3); transition:border-color 0.2s; }
+.contact-email:hover { border-color:var(--amber); }
+.contact-links { display:flex; flex-direction:column; gap:12px; }
+.clink { display:flex; align-items:center; gap:16px; padding:16px 20px; border:1px solid rgba(200,130,10,0.1); text-decoration:none; transition:all 0.25s; position:relative; overflow:hidden; background:var(--panel); }
+.clink::before { content:''; position:absolute; inset:0; background:rgba(200,130,10,0.04); transform:translateX(-100%); transition:transform 0.3s; }
+.clink:hover::before { transform:translateX(0); }
+.clink:hover { border-color:rgba(200,130,10,0.3); }
+.clink-icon { font-size:1.1rem; width:32px; text-align:center; flex-shrink:0; }
+.clink-info { flex:1; }
+.clink-platform { font-size:0.58rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:2px; opacity:0.6; }
+.clink-name { font-size:0.82rem; color:var(--text); font-weight:400; }
+.clink:hover .clink-name { color:var(--amber); }
+.clink-arr { color:var(--muted); font-size:1rem; transition:all 0.2s; margin-left:auto; opacity:0.4; }
+.clink:hover .clink-arr { transform:translateX(4px); color:var(--amber); opacity:1; }
+
+/* ═══════════════ FOOTER ═══════════════ */
+footer { position:relative; z-index:1; padding:28px 48px; background:rgba(0,0,0,0.5); border-top:1px solid rgba(200,130,10,0.06); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+.foot-txt { font-size:0.65rem; letter-spacing:0.1em; color:var(--muted); opacity:0.5; }
+.foot-top { font-size:0.65rem; color:var(--muted); text-decoration:none; letter-spacing:0.1em; transition:color 0.2s; opacity:0.5; }
+.foot-top:hover { color:var(--amber); opacity:1; }
+
+/* divider */
+.hdiv { position:relative; z-index:1; display:flex; align-items:center; gap:16px; padding:0 48px; }
+.hdiv-l { flex:1; height:1px; background:rgba(200,130,10,0.08); }
+.hdiv-txt { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.2em; color:rgba(200,130,10,0.25); }
+
+/* scroll fade */
+.fi { opacity:0; transform:translateY(28px); transition:opacity 0.7s ease, transform 0.7s ease; }
+.fi.on { opacity:1; transform:none; }
+
+/* ═══════════════ RESPONSIVE ═══════════════ */
+@media(max-width:960px){
+  nav{padding:0 20px;}
+  .nav-links{display:none;position:absolute;top:56px;left:0;right:0;flex-direction:column;background:rgba(10,12,15,0.97);padding:20px;gap:16px;border-bottom:1px solid var(--border);}
+  .nav-links.open{display:flex;}
+  .nav-cta{display:none;}
+  .hamburger{display:flex;}
+  #hero{grid-template-columns:1fr;}
+  .hero-right{min-height:300px;}
+  .hero-left{padding:60px 20px;}
+  .about-layout,.skills-layout,.contact-layout{grid-template-columns:1fr;gap:40px;}
+  .anim-skills{grid-template-columns:repeat(2,1fr);}
+  .exp-layout{grid-template-columns:1fr;gap:32px;}
+  .exp-sidebar{position:relative;top:auto;}
+  section{padding:70px 20px!important;}
+  .hdiv{padding:0 20px;}
+  footer{padding:20px;}
+  .edu-card{flex-direction:column;gap:16px;padding:28px;}
+  .edu-num{font-size:3rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-brand">Bharath<span>kumar.</span></a>
+  <ul class="nav-links" id="navlinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:bharathreddymd785@gmail.com" class="nav-cta">Get in touch</a>
+  <button class="hamburger" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left fi">
+    <div class="hero-eyebrow">Cybersecurity Professional</div>
+    <h1 class="hero-name">Bharath<br>Kumar<em>Bandari</em></h1>
+    <p class="hero-desc">Risk &amp; Compliance Analyst at the <strong>State of South Carolina</strong>. Five years figuring out how attackers think — so I can <strong>build defenses they can't predict.</strong></p>
+    <div class="hero-actions">
+      <a href="#experience" class="btn-amber">See my work</a>
+      <a href="#contact" class="btn-outline">Let's talk</a>
+    </div>
+  </div>
+  <div class="hero-right fi" style="transition-delay:0.15s">
+    <div class="hero-bg-text">BR</div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-n">5+</div><div class="hero-stat-l">Years in security</div></div>
+      <div class="hero-stat"><div class="hero-stat-n">4</div><div class="hero-stat-l">Orgs secured</div></div>
+      <div class="hero-stat"><div class="hero-stat-n">M.S.</div><div class="hero-stat-l">Cybersecurity · UMBC</div></div>
+      <div class="hero-stat"><div class="hero-stat-n">SEC+</div><div class="hero-stat-l">CompTIA certified</div></div>
+    </div>
+    <div class="hero-tags">
+      <span class="hero-tag">Threat Hunting</span><span class="hero-tag">Vuln Management</span>
+      <span class="hero-tag">Detection Engineering</span><span class="hero-tag">NIST · ISO 27001</span>
+      <span class="hero-tag">Python Automation</span><span class="hero-tag">MITRE ATT&CK</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-inner">
+    <div class="about-layout fi">
+
+      <!-- LEFT: identity card -->
+      <div>
+        <div class="sec-label">About me</div>
+        <h2 class="sec-title" style="margin-bottom:28px;">Security by<br><em>instinct.</em></h2>
+        <div class="about-card">
+          <div class="about-avatar">
+            BR
+            <div class="online-ring"></div>
+          </div>
+          <div class="about-name">Bharathkumar Reddy Bandari</div>
+          <div class="about-title">Risk &amp; Compliance Analyst II</div>
+          <ul class="about-facts">
+            <li><span>Based in</span><span>Columbia, SC</span></li>
+            <li><span>Employer</span><span>State of South Carolina</span></li>
+            <li><span>Degree</span><span>M.S. Cybersecurity · UMBC</span></li>
+            <li><span>Cert</span><span>CompTIA Security+</span></li>
+            <li><span>Experience</span><span>5+ Years</span></li>
+            <li><span>Writes on</span><span>Medium</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- RIGHT: animations -->
+      <div class="about-animations">
+
+        <!-- Counters -->
+        <div class="anim-counters">
+          <div class="anim-counter" style="--d:0s">
+            <div class="counter-num" id="cnt1">0</div>
+            <div class="counter-label">Threats Blocked</div>
+          </div>
+          <div class="anim-counter" style="--d:0.3s">
+            <div class="counter-num" id="cnt2">0</div>
+            <div class="counter-label">Vulns Remediated</div>
+          </div>
+          <div class="anim-counter" style="--d:0.6s">
+            <div class="counter-num" id="cnt3">0</div>
+            <div class="counter-label">Rules Deployed</div>
+          </div>
+        </div>
+
+        <!-- Threat map -->
+        <div class="anim-map">
+          <div class="anim-map-title"><span class="live-dot"></span>Live Threat Activity Simulation</div>
+          <canvas id="threatCanvas"></canvas>
+        </div>
+
+        <!-- Radar + events -->
+        <div class="anim-radar">
+          <div class="radar-wrap">
+            <canvas id="radarCanvas" width="140" height="140"></canvas>
+          </div>
+          <div class="radar-info">
+            <div class="radar-info-title">Recent Detection Events</div>
+            <ul class="radar-events" id="radarEvents">
+              <li><span class="rev-dot g"></span>Conditional access policy audited</li>
+              <li><span class="rev-dot y"></span>KQL anomaly rule triggered</li>
+              <li><span class="rev-dot r"></span>Suspicious login — blocked</li>
+              <li><span class="rev-dot g"></span>Threat intel feed ingested</li>
+              <li><span class="rev-dot y"></span>Vulnerability scan completed</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Skill rings -->
+        <div class="anim-skills" id="skillRings">
+          <!-- injected by JS -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hdiv"><div class="hdiv-l"></div><div class="hdiv-txt">experience</div><div class="hdiv-l"></div></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="sec-inner">
+    <div class="exp-layout">
+      <div class="exp-sidebar fi">
+        <div class="sec-label">Where I've worked</div>
+        <h2 class="sec-title">My<br><em>journey</em></h2>
+        <ul class="exp-nav" id="expNav">
+          <li class="active" onclick="showExp('sc')" data-id="sc">
+            <div class="exp-nav-company">State of South Carolina</div>
+            <div class="exp-nav-period">May 2024 – Present</div>
+          </li>
+          <li onclick="showExp('datics')" data-id="datics">
+            <div class="exp-nav-company">Datics</div>
+            <div class="exp-nav-period">Jun 2023 – Apr 2024</div>
+          </li>
+          <li onclick="showExp('dell')" data-id="dell">
+            <div class="exp-nav-company">Dell Technologies</div>
+            <div class="exp-nav-period">Aug 2020 – Aug 2021</div>
+          </li>
+          <li onclick="showExp('hradius')" data-id="hradius">
+            <div class="exp-nav-company">High Radius</div>
+            <div class="exp-nav-period">Jun 2019 – May 2020</div>
+          </li>
+        </ul>
+      </div>
+      <div class="exp-panels fi" style="transition-delay:0.15s">
+
+        <div class="exp-panel active" id="exp-sc">
+          <div class="exp-header">
+            <div class="exp-role">Risk Management &amp; Compliance Analyst II</div>
+            <div class="exp-meta-row">
+              <span class="exp-company-name">State of South Carolina</span>
+              <span class="exp-dot"></span><span class="exp-location">Columbia, SC</span>
+              <span class="exp-period">May 2024 — Present</span>
+            </div>
+            <span class="exp-badge">● Active</span>
+          </div>
+          <div class="exp-story">
+            <p>This is the role where everything I'd learned started coming together. I went from monitoring alerts to actually shaping how an entire state agency thinks about risk — and that shift changed how I approach every problem.</p>
+            <p>Day-to-day is vulnerability management across a large, complex infrastructure — scanning with <strong>Nessus and Microsoft Defender</strong>, triaging findings by real business impact, and making sure remediation actually happens rather than just getting tracked in a spreadsheet. I align everything to <strong>NIST 800-53</strong>, but more importantly, I try to make the controls meaningful rather than checkbox exercises.</p>
+            <div class="pull-quote">"I once traced an alert back to a misconfigured conditional access policy that had been sitting quietly for months. That kind of thing keeps you humble — and keeps you thorough."</div>
+            <p>One project I'm most proud of: a <strong>Python automation pipeline</strong> that ingests MS-ISAC threat intel and automatically pushes malicious IPs/domains into Cisco Umbrella via API. Threat gets flagged, blocks go up — sometimes before our tools have even processed the initial alert.</p>
+          </div>
+          <div class="exp-tags">
+            <span class="exp-tag">MS Defender</span><span class="exp-tag">KQL</span><span class="exp-tag">Tenable/Nessus</span>
+            <span class="exp-tag">MITRE ATT&CK</span><span class="exp-tag">Python Automation</span><span class="exp-tag">Cisco Umbrella</span>
+            <span class="exp-tag">Entra ID</span><span class="exp-tag">NIST 800-53</span><span class="exp-tag">ISO 27001</span><span class="exp-tag">Axonius</span>
+          </div>
+        </div>
+
+        <div class="exp-panel" id="exp-datics">
+          <div class="exp-header">
+            <div class="exp-role">Cybersecurity Analyst</div>
+            <div class="exp-meta-row">
+              <span class="exp-company-name">Datics</span>
+              <span class="exp-dot"></span><span class="exp-location">Charlotte, NC</span>
+              <span class="exp-period">Jun 2023 — Apr 2024</span>
+            </div>
+            <span class="exp-badge" style="background:rgba(90,96,112,0.15);color:var(--muted);border-color:rgba(90,96,112,0.2);">Completed</span>
+          </div>
+          <div class="exp-story">
+            <p>Datics was a smaller shop, which meant wearing more hats and making calls without always having a senior analyst to check with. That independence pushed me forward faster than any structured program would have.</p>
+            <p>Most of my work split between <strong>Splunk and QRadar</strong> — monitoring, triaging, and investigating alerts across client environments. Medium-severity incidents I owned completely. For high-stakes ones, I assembled a full picture before escalating so the response team wasn't starting from zero.</p>
+            <div class="pull-quote">"The most useful thing I did there wasn't catching a specific incident — it was rebuilding our response playbooks so anyone on the team could handle a case the same way I would."</div>
+            <p>I spent a lot of time in <strong>Palo Alto firewall logs</strong> looking for patterns that felt off — lateral movement signatures, access attempts at odd hours, traffic going to unusual destinations. Teaching Jupyter notebook sessions to newer analysts taught me as much as it taught them.</p>
+          </div>
+          <div class="exp-tags">
+            <span class="exp-tag">Splunk</span><span class="exp-tag">IBM QRadar</span><span class="exp-tag">Palo Alto</span>
+            <span class="exp-tag">Incident Response</span><span class="exp-tag">Log Forensics</span><span class="exp-tag">IOC Analysis</span><span class="exp-tag">Jupyter Notebooks</span>
+          </div>
+        </div>
+
+        <div class="exp-panel" id="exp-dell">
+          <div class="exp-header">
+            <div class="exp-role">Cybersecurity Analyst</div>
+            <div class="exp-meta-row">
+              <span class="exp-company-name">Dell Technologies</span>
+              <span class="exp-dot"></span><span class="exp-location">Bangalore, India</span>
+              <span class="exp-period">Aug 2020 — Aug 2021</span>
+            </div>
+            <span class="exp-badge" style="background:rgba(90,96,112,0.15);color:var(--muted);border-color:rgba(90,96,112,0.2);">Completed</span>
+          </div>
+          <div class="exp-story">
+            <p>Working at Dell meant operating at scale. The infrastructure was massive, alert volume was high, and the stakes for getting things wrong were real. It was the environment that taught me discipline and process.</p>
+            <p>Day-to-day was <strong>Splunk and ArcSight</strong> — monitoring event streams, correlating across data sources, and investigating anything that didn't belong. You get fast at pattern recognition when you're doing it every single day.</p>
+            <div class="pull-quote">"Most incidents look unremarkable at first. The skill is knowing which unremarkable things are worth a second look."</div>
+            <p>I ran regular <strong>Tenable One vulnerability assessments</strong> and got good at the full lifecycle — finding, validating, and following up until fixes were confirmed. I also rebuilt leadership reporting dashboards to make risk trends actually readable.</p>
+          </div>
+          <div class="exp-tags">
+            <span class="exp-tag">Splunk</span><span class="exp-tag">ArcSight</span><span class="exp-tag">Tenable One</span>
+            <span class="exp-tag">Vulnerability Management</span><span class="exp-tag">Risk Reporting</span>
+          </div>
+        </div>
+
+        <div class="exp-panel" id="exp-hradius">
+          <div class="exp-header">
+            <div class="exp-role">Security Operations Center Intern</div>
+            <div class="exp-meta-row">
+              <span class="exp-company-name">High Radius</span>
+              <span class="exp-dot"></span><span class="exp-location">Bangalore, India</span>
+              <span class="exp-period">Jun 2019 — May 2020</span>
+            </div>
+            <span class="exp-badge" style="background:rgba(90,96,112,0.15);color:var(--muted);border-color:rgba(90,96,112,0.2);">Where it started</span>
+          </div>
+          <div class="exp-story">
+            <p>I'll be honest — I had no idea what I was doing when I started here. Theory from class felt completely different from a live Splunk dashboard with real alerts coming in during actual shifts.</p>
+            <p>Senior analysts were patient. They showed me how to read logs, how to ask the right questions before jumping to conclusions, and how to write up findings clearly enough that someone else could pick up where you left off. Those habits stuck with me through everything that followed.</p>
+            <div class="pull-quote">"My first useful contribution was a PowerShell script that flagged unusual login times. Small thing — but it caught something real, and that feeling never got old."</div>
+            <p>I wrote documentation, helped triage alerts, and slowly got comfortable with the rhythm of SOC work — the shift handoffs, the false positive rate, the occasional thing that turns out to be genuinely alarming. It was unglamorous and I loved it.</p>
+          </div>
+          <div class="exp-tags">
+            <span class="exp-tag">Splunk</span><span class="exp-tag">PowerShell</span>
+            <span class="exp-tag">Alert Triage</span><span class="exp-tag">Log Analysis</span><span class="exp-tag">Documentation</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hdiv"><div class="hdiv-l"></div><div class="hdiv-txt">skills</div><div class="hdiv-l"></div></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sec-inner">
+    <div class="sec-label fi">What I work with</div>
+    <h2 class="sec-title fi"><em>Skills</em> &amp; Arsenal</h2>
+    <div class="skills-layout fi">
+      <div>
+        <div class="skill-col-title">Core competencies</div>
+        <div class="sbar"><div class="sbar-top"><span class="sbar-name">Threat Detection &amp; Hunting</span><span class="sbar-pct">92%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="92"></div></div></div>
+        <div class="sbar"><div class="sbar-top"><span class="sbar-name">Incident Response</span><span class="sbar-pct">90%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="90"></div></div></div>
+        <div class="sbar"><div class="sbar-top"><span class="sbar-name">Vulnerability Management</span><span class="sbar-pct">88%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="88"></div></div></div>
+        <div class="sbar"><div class="sbar-top"><span class="sbar-name">GRC &amp; Compliance</span><span class="sbar-pct">86%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="86"></div></div></div>
+        <div class="sbar"><div class="sbar-top"><span class="sbar-name">Cloud Security (Azure/AWS)</span><span class="sbar-pct">82%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="82"></div></div></div>
+        <div class="sbar"><div class="sbar-top"><span class="sbar-name">Security Automation (Python)</span><span class="sbar-pct">80%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="80"></div></div></div>
+      </div>
+      <div>
+        <div class="skill-col-title">Tools &amp; frameworks</div>
+        <div class="tag-section">
+          <div class="tag-section-title">Security Platforms</div>
+          <div class="tag-row">
+            <span class="skil-tag amber">MS Defender</span><span class="skil-tag amber">Splunk</span>
+            <span class="skil-tag amber">IBM QRadar</span><span class="skil-tag amber">Tenable One</span>
+            <span class="skil-tag">Palo Alto</span><span class="skil-tag">Cisco Umbrella</span>
+            <span class="skil-tag">Axonius</span><span class="skil-tag">Burp Suite</span>
+            <span class="skil-tag">Nmap</span><span class="skil-tag">Wireshark</span>
+            <span class="skil-tag">Metasploit</span><span class="skil-tag">Volatility</span>
+          </div>
+        </div>
+        <div class="tag-section">
+          <div class="tag-section-title">Frameworks</div>
+          <div class="tag-row">
+            <span class="skil-tag cyan">MITRE ATT&CK</span><span class="skil-tag cyan">NIST 800-53</span>
+            <span class="skil-tag cyan">ISO/IEC 27001</span><span class="skil-tag cyan">NIST CSF</span>
+            <span class="skil-tag">CIS Controls</span><span class="skil-tag">HIPAA</span><span class="skil-tag">GDPR</span>
+          </div>
+        </div>
+        <div class="tag-section">
+          <div class="tag-section-title">Languages &amp; Cloud</div>
+          <div class="tag-row">
+            <span class="skil-tag amber">Python</span><span class="skil-tag amber">PowerShell</span>
+            <span class="skil-tag amber">KQL</span><span class="skil-tag">AQL</span>
+            <span class="skil-tag">Azure</span><span class="skil-tag">AWS</span>
+            <span class="skil-tag">Entra ID</span><span class="skil-tag">Active Directory</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTS -->
+<section id="certifications">
+  <div class="sec-inner">
+    <div class="sec-label fi">Credentials</div>
+    <h2 class="sec-title fi"><em>Certifications</em></h2>
+    <div class="cert-layout fi">
+      <div class="cert-card">
+        <span class="cert-icon">🏅</span>
+        <div class="cert-name">CompTIA Security+</div>
+        <div class="cert-issuer">Issued by CompTIA</div>
+        <span class="cert-date">Verified · May 2023</span>
+      </div>
+      <div class="cert-card cert-coming">
+        <span class="cert-icon">⚙️</span>
+        <div class="cert-name">Next Certification</div>
+        <div class="cert-issuer">In progress</div>
+        <span class="cert-date">Coming soon</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hdiv"><div class="hdiv-l"></div><div class="hdiv-txt">education</div><div class="hdiv-l"></div></div>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="sec-inner">
+    <div class="sec-label fi">Academic background</div>
+    <h2 class="sec-title fi" style="margin-bottom:32px"><em>Education</em></h2>
+    <div class="edu-card fi">
+      <div class="edu-num">01</div>
+      <div>
+        <div class="edu-degree">Master of Science in Cybersecurity</div>
+        <div class="edu-school">University of Maryland, Baltimore County (UMBC)</div>
+        <div class="edu-detail">GPA: 3.5 / 4.0</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-inner">
+    <div class="sec-label fi">Get in touch</div>
+    <h2 class="sec-title fi"><em>Let's</em> connect</h2>
+    <div class="contact-layout fi">
+      <div>
+        <p class="contact-text">"Whether you're building a security team, looking to collaborate, or just want to talk detection engineering — I'm always up for a good conversation."</p>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:12px;letter-spacing:0.05em;">Drop me a line at</p>
+        <a href="mailto:bharathreddymd785@gmail.com" class="contact-email">bharathreddymd785@gmail.com</a>
+      </div>
+      <div class="contact-links">
+        <a href="https://www.linkedin.com/in/bharath-bandari-077976193/" target="_blank" class="clink">
+          <div class="clink-icon">💼</div><div class="clink-info"><span class="clink-platform">Professional network</span><span class="clink-name">LinkedIn</span></div><span class="clink-arr">→</span>
+        </a>
+        <a href="https://github.com/bharath-785" target="_blank" class="clink">
+          <div class="clink-icon">⚙️</div><div class="clink-info"><span class="clink-platform">Open source &amp; projects</span><span class="clink-name">GitHub</span></div><span class="clink-arr">→</span>
+        </a>
+        <a href="https://medium.com/@bharathbandari" target="_blank" class="clink">
+          <div class="clink-icon">📝</div><div class="clink-info"><span class="clink-platform">Writing &amp; articles</span><span class="clink-name">Medium</span></div><span class="clink-arr">→</span>
+        </a>
+        <a href="https://www.helpareporter.com/journalist/bharathbandari" target="_blank" class="clink">
+          <div class="clink-icon">🔐</div><div class="clink-info"><span class="clink-platform">Community</span><span class="clink-name">HORA</span></div><span class="clink-arr">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-txt">© 2025 Bharathkumar Reddy Bandari · Columbia, SC</div>
+  <a href="#hero" class="foot-top">↑ Back to top</a>
+</footer>
+
+<script>
+/* ── NAV ── */
+function toggleNav(){ document.getElementById('navlinks').classList.toggle('open'); }
+
+/* ── EXP TABS ── */
+function showExp(id){
+  document.querySelectorAll('.exp-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.exp-nav li').forEach(l=>l.classList.remove('active'));
+  document.getElementById('exp-'+id).classList.add('active');
+  document.querySelector('[data-id="'+id+'"]').classList.add('active');
+}
+
+/* ── SCROLL FADE ── */
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:0.1});
+document.querySelectorAll('.fi').forEach(el=>obs.observe(el));
+
+/* ── SKILL BARS ── */
+const sobs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.querySelectorAll('.sbar-fill').forEach((b,i)=>setTimeout(()=>{b.style.width=b.getAttribute('data-w')+'%';},i*120));});
+},{threshold:0.3});
+document.querySelectorAll('.skills-layout').forEach(el=>sobs.observe(el));
+
+/* ════════════════════════════════════════════
+   ANIMATED ABOUT SECTION
+   ════════════════════════════════════════════ */
+
+/* ── Counters ── */
+function animCount(el, target, duration, suffix=''){
+  let start=0, step=target/((duration/16));
+  const tick=()=>{
+    start=Math.min(start+step, target);
+    el.textContent = Math.floor(start).toLocaleString() + suffix;
+    if(start<target) requestAnimationFrame(tick);
+  };
+  tick();
+}
+const cntObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      animCount(document.getElementById('cnt1'), 1240, 2000, '+');
+      animCount(document.getElementById('cnt2'), 340, 1800, '+');
+      animCount(document.getElementById('cnt3'), 87, 1600, '+');
+      cntObs.disconnect();
+    }
+  });
+},{threshold:0.3});
+cntObs.observe(document.querySelector('.anim-counters'));
+
+/* ── Threat Map Canvas ── */
+(function initThreatMap(){
+  const canvas = document.getElementById('threatCanvas');
+  const ctx = canvas.getContext('2d');
+  function resize(){
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // City nodes (as % of canvas size)
+  const nodes = [
+    {xp:0.12, yp:0.35, label:'Seattle'},
+    {xp:0.22, yp:0.55, label:'San Francisco'},
+    {xp:0.35, yp:0.62, label:'Los Angeles'},
+    {xp:0.55, yp:0.40, label:'Columbia SC'},
+    {xp:0.42, yp:0.28, label:'Chicago'},
+    {xp:0.70, yp:0.30, label:'New York'},
+    {xp:0.80, yp:0.18, label:'London'},
+    {xp:0.88, yp:0.35, label:'Frankfurt'},
+    {xp:0.75, yp:0.55, label:'Moscow'},
+    {xp:0.90, yp:0.60, label:'Beijing'},
+    {xp:0.83, yp:0.72, label:'Singapore'},
+    {xp:0.30, yp:0.80, label:'São Paulo'},
+  ];
+
+  // Packet: travels from source to destination
+  class Packet {
+    constructor(){
+      const src = nodes[Math.floor(Math.random()*nodes.length)];
+      const dst = nodes[Math.floor(Math.random()*nodes.length)];
+      this.sx = src.xp * canvas.width;
+      this.sy = src.yp * canvas.height;
+      this.dx = dst.xp * canvas.width;
+      this.dy = dst.yp * canvas.height;
+      this.t = 0;
+      this.speed = 0.004 + Math.random()*0.008;
+      this.blocked = Math.random() < 0.35; // 35% get blocked
+      this.color = this.blocked ? '#e05252' : '#c8820a';
+    }
+    update(){ this.t += this.speed; }
+    isDone(){ return this.t >= 1; }
+    draw(){
+      const x = this.sx + (this.dx - this.sx) * this.t;
+      const y = this.sy + (this.dy - this.sy) * this.t;
+      // trail
+      const trailLen = 0.15;
+      const t0 = Math.max(0, this.t - trailLen);
+      const x0 = this.sx + (this.dx - this.sx) * t0;
+      const y0 = this.sy + (this.dy - this.sy) * t0;
+      const grad = ctx.createLinearGradient(x0,y0,x,y);
+      grad.addColorStop(0,'transparent');
+      grad.addColorStop(1, this.color);
+      ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x,y);
+      ctx.strokeStyle = grad; ctx.lineWidth = 1.5; ctx.stroke();
+      // head dot
+      ctx.beginPath(); ctx.arc(x,y,2.5,0,Math.PI*2);
+      ctx.fillStyle = this.color; ctx.fill();
+      // blocked X burst
+      if(this.blocked && this.t > 0.95){
+        ctx.save();
+        ctx.globalAlpha = (1-this.t)*10;
+        ctx.strokeStyle = '#e05252'; ctx.lineWidth = 1.5;
+        const s=6;
+        ctx.beginPath(); ctx.moveTo(x-s,y-s); ctx.lineTo(x+s,y+s); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x+s,y-s); ctx.lineTo(x-s,y+s); ctx.stroke();
+        ctx.restore();
+      }
+    }
+  }
+
+  let packets = [];
+  function spawnPacket(){ packets.push(new Packet()); }
+  setInterval(spawnPacket, 400);
+  spawnPacket(); spawnPacket(); spawnPacket();
+
+  function drawNodes(){
+    nodes.forEach(n=>{
+      const x = n.xp*canvas.width, y = n.yp*canvas.height;
+      const isHome = n.label === 'Columbia SC';
+      ctx.beginPath(); ctx.arc(x,y, isHome?5:3, 0, Math.PI*2);
+      ctx.fillStyle = isHome ? '#c8820a' : 'rgba(200,130,10,0.4)';
+      ctx.fill();
+      if(isHome){
+        ctx.beginPath(); ctx.arc(x,y,8,0,Math.PI*2);
+        ctx.strokeStyle='rgba(200,130,10,0.2)'; ctx.lineWidth=1; ctx.stroke();
+        ctx.beginPath(); ctx.arc(x,y,12,0,Math.PI*2);
+        ctx.strokeStyle='rgba(200,130,10,0.1)'; ctx.stroke();
+        // label
+        ctx.fillStyle='rgba(200,130,10,0.8)';
+        ctx.font='500 9px DM Mono, monospace';
+        ctx.fillText('◈ '+n.label, x+10, y+4);
+      }
+    });
+  }
+
+  function frame(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    // faint grid
+    ctx.strokeStyle='rgba(200,130,10,0.04)'; ctx.lineWidth=1;
+    for(let i=0;i<canvas.width;i+=40){ ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,canvas.height); ctx.stroke(); }
+    for(let j=0;j<canvas.height;j+=40){ ctx.beginPath(); ctx.moveTo(0,j); ctx.lineTo(canvas.width,j); ctx.stroke(); }
+    drawNodes();
+    packets = packets.filter(p=>!p.isDone());
+    packets.forEach(p=>{ p.update(); p.draw(); });
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+/* ── Radar Canvas ── */
+(function initRadar(){
+  const canvas = document.getElementById('radarCanvas');
+  const ctx = canvas.getContext('2d');
+  const cx=70, cy=70, r=60;
+  let angle=0;
+
+  // random blips
+  const blips=[];
+  for(let i=0;i<8;i++){
+    const a=Math.random()*Math.PI*2;
+    const d=Math.random()*r*0.85;
+    blips.push({
+      x:cx+Math.cos(a)*d, y:cy+Math.sin(a)*d,
+      alpha:0, lit:false,
+      color:Math.random()<0.3?'#e05252':Math.random()<0.5?'#c8820a':'#52e08a'
+    });
+  }
+
+  function frame(){
+    ctx.clearRect(0,0,140,140);
+    // rings
+    [1,0.66,0.33].forEach(f=>{
+      ctx.beginPath(); ctx.arc(cx,cy,r*f,0,Math.PI*2);
+      ctx.strokeStyle='rgba(200,130,10,0.12)'; ctx.lineWidth=1; ctx.stroke();
+    });
+    // crosshairs
+    ctx.strokeStyle='rgba(200,130,10,0.1)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(cx-r,cy); ctx.lineTo(cx+r,cy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx,cy-r); ctx.lineTo(cx,cy+r); ctx.stroke();
+
+    // sweep gradient
+    const sweep = ctx.createConicalGradient ? null : null;
+    ctx.save();
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,angle-0.6,angle,false);
+    ctx.closePath();
+    const g=ctx.createRadialGradient(cx,cy,0,cx,cy,r);
+    g.addColorStop(0,'rgba(200,130,10,0.0)');
+    g.addColorStop(1,'rgba(200,130,10,0.18)');
+    ctx.fillStyle=g; ctx.fill();
+    ctx.restore();
+
+    // sweep line
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+Math.cos(angle)*r, cy+Math.sin(angle)*r);
+    ctx.strokeStyle='rgba(200,130,10,0.6)'; ctx.lineWidth=1.5; ctx.stroke();
+
+    // blips — light up as sweep passes
+    blips.forEach(b=>{
+      const ba=Math.atan2(b.y-cy, b.x-cx);
+      let diff = ((angle-ba)%(Math.PI*2)+Math.PI*2)%(Math.PI*2);
+      if(diff<0.15){ b.alpha=1; b.lit=true; }
+      else { b.alpha=Math.max(0,b.alpha-0.012); }
+      if(b.alpha>0){
+        ctx.beginPath(); ctx.arc(b.x,b.y,3,0,Math.PI*2);
+        ctx.fillStyle=b.color; ctx.globalAlpha=b.alpha; ctx.fill();
+        ctx.globalAlpha=1;
+      }
+    });
+
+    // center dot
+    ctx.beginPath(); ctx.arc(cx,cy,3,0,Math.PI*2);
+    ctx.fillStyle='rgba(200,130,10,0.8)'; ctx.fill();
+
+    angle=(angle+0.022)%(Math.PI*2);
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+/* ── Skill Rings SVG ── */
+(function buildSkillRings(){
+  const skills=[
+    {label:'Threat Intel',pct:92,color:'#c8820a'},
+    {label:'IR & Forensics',pct:90,color:'#e8970c'},
+    {label:'GRC/Compliance',pct:86,color:'#5294e0'},
+    {label:'Automation',pct:80,color:'#52e08a'},
+  ];
+  const container=document.getElementById('skillRings');
+  const size=80, stroke=5, r=32, circ=2*Math.PI*r;
+  skills.forEach((s,i)=>{
+    const wrap=document.createElement('div');
+    wrap.className='skill-ring-wrap';
+    wrap.innerHTML=`
+      <svg class="skill-ring-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+        <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="rgba(200,130,10,0.08)" stroke-width="${stroke}"/>
+        <circle class="ring-fill" cx="${size/2}" cy="${size/2}" r="${r}" fill="none"
+          stroke="${s.color}" stroke-width="${stroke}" stroke-linecap="round"
+          stroke-dasharray="${circ}" stroke-dashoffset="${circ}"
+          transform="rotate(-90 ${size/2} ${size/2})"
+          style="transition:stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1);transition-delay:${i*0.15}s"/>
+        <text x="${size/2}" y="${size/2+1}" text-anchor="middle" dominant-baseline="middle"
+          font-family="DM Mono,monospace" font-size="11" fill="${s.color}" font-weight="500">${s.pct}%</text>
+      </svg>
+      <div class="skill-ring-label">${s.label}</div>`;
+    container.appendChild(wrap);
+    // animate on scroll
+    const ringObs=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          const fill=wrap.querySelector('.ring-fill');
+          fill.style.strokeDashoffset = circ*(1-s.pct/100);
+          ringObs.disconnect();
+        }
+      });
+    },{threshold:0.3});
+    ringObs.observe(wrap);
+  });
+})();
+
+/* ── Rotating radar events ── */
+(function rotateEvents(){
+  const events=[
+    {c:'g', t:'Conditional access policy audited'},
+    {c:'y', t:'KQL anomaly rule triggered'},
+    {c:'r', t:'Suspicious login pattern — blocked'},
+    {c:'g', t:'Threat intel feed auto-ingested'},
+    {c:'y', t:'Vulnerability scan completed'},
+    {c:'r', t:'Brute-force attempt detected'},
+    {c:'g', t:'Defender custom rule deployed'},
+    {c:'y', t:'NIST 800-53 control validated'},
+    {c:'r', t:'Lateral movement signature flagged'},
+    {c:'g', t:'Python pipeline executed — 0 errors'},
+  ];
+  let idx=0;
+  const list=document.getElementById('radarEvents');
+  setInterval(()=>{
+    const items=list.querySelectorAll('li');
+    // fade last one out, shift up, add new
+    idx=(idx+1)%events.length;
+    const e=events[idx];
+    const li=document.createElement('li');
+    li.style.opacity='0';li.style.transform='translateY(8px)';li.style.transition='all 0.4s';
+    li.innerHTML=`<span class="rev-dot ${e.c}"></span>${e.t}`;
+    list.appendChild(li);
+    if(list.children.length>5) list.removeChild(list.children[0]);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{ li.style.opacity='1'; li.style.transform='none'; }));
+  }, 2000);
+})();
+</script>
+</body>
+</html>
