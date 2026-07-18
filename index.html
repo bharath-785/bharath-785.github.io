@@ -813,7 +813,7 @@ cntObs.observe(document.querySelector('.anim-counters'));
   function drawNodes(){
     nodes.forEach(n=>{
       const x = n.xp*canvas.width, y = n.yp*canvas.height;
-      const isHome = n.label === 'Columbia SC';
+      const isHome = n.label === 'Chicago IL';
       ctx.beginPath(); ctx.arc(x,y, isHome?5:3, 0, Math.PI*2);
       ctx.fillStyle = isHome ? '#c8820a' : 'rgba(200,130,10,0.4)';
       ctx.fill();
